@@ -1,9 +1,5 @@
 package net.reimaden.arcadiandream.item.custom.tools;
 
-
-
-
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -42,13 +38,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-
 public class RoukankenItem extends SwordItem {
 
 boolean isDashing = false;
-
+int GroundDashActivation = 0;
+boolean isGroundDashing = false;
 int dashTimer;
-
 
 
     public RoukankenItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
@@ -57,24 +52,39 @@ int dashTimer;
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (selected) {
+        if (selected && !world.isClient) {
 
-            //Cancel Fall damage when dashing
-            if (!entity.isOnGround() && isDashing) {
-                entity.fallDistance = 0F;
-            } else {
-                isDashing = false;
-            }
-
-            //Makeshift timer for particles.
-            if (isDashing) {
-                if (dashTimer > 30) {
-                    generateTrail(world, (PlayerEntity) entity);
+            /*This mess is required to make dashing from the ground activate isDashing because there are a few
+            ticks where the player is still on the ground before achieving lift off which cancels the dash.
+            Furthermore, GroundDashActivation is used to make sure that the dash is cancelled when using
+            the dash on the ground but not actually moving anywhere.*/
+            if (isGroundDashing) {
+                if (entity.isOnGround() || entity.isInLava()){
+                    if (GroundDashActivation >= 2){
+                        isGroundDashing = false;
+                    } else {
+                     isDashing = true;
+                    }
                 } else {
-                    dashTimer++;
+                    isDashing = true;
+                    isGroundDashing = false;
+                    }
                 }
-            }
 
+            //Cancel Fall damage when dashing and create particle
+            if (isDashing) {
+                if (!entity.isOnGround()) {
+                    entity.fallDistance = 0F;
+                    if (dashTimer > 30) {
+                        generateTrail(world, (PlayerEntity) entity);
+                    } else {
+                        dashTimer++;
+                    }
+                } else {
+                    isDashing = false;
+                }
+                GroundDashActivation++;
+            }
         }
     }
     @Override
@@ -91,11 +101,7 @@ int dashTimer;
 if (!world.isClient && hand == Hand.MAIN_HAND && nbt != null){
 
 //Dash Function
-
-
-
     if (StaminaHelper.getStamina((IEntityDataSaver) user) >= 30 && !user.isSneaking() && nbt.getByte("sheathed") == 0) {
-        isDashing = true;
 
         if (!user.isCreative()){
             StaminaHelper.changeStamina((IEntityDataSaver) user, -30);
@@ -103,20 +109,19 @@ if (!world.isClient && hand == Hand.MAIN_HAND && nbt != null){
 
         PacketByteBuf buffer = PacketByteBufs.create();
         ServerPlayNetworking.send((ServerPlayerEntity) user, ModMessages.ROUKANKEN_DASH, buffer);
-
         SliceNDice(world, user, user.getMainHandStack());
-
-        if (user.isOnGround()){
+        if (user.isOnGround() || user.isInLava()){
             playSound(world, user, ModSounds.ROUKANKEN_DASH_1);
+            isGroundDashing = true;
+            GroundDashActivation = 0;
         } else {
             playSound(world, user, ModSounds.ROUKANKEN_DASH_2);
+            isDashing = true;
         }
+
     }
 
     //Shift + RC to sheathe and unsheathe the sword, default is sheathed.
-
-
-
     if (user.isSneaking()) {
         //Sheathe or unsheathe
         if (nbt.getByte("sheathed") == 1) {
@@ -143,8 +148,6 @@ if (!world.isClient && hand == Hand.MAIN_HAND && nbt != null){
         }
         if (nbt != null)
         {
-
-
             if (slot == EquipmentSlot.MAINHAND && nbt.getByte("sheathed") == 0){
                 multimap.put(EntityAttributes.GENERIC_ATTACK_DAMAGE,
                         new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier",

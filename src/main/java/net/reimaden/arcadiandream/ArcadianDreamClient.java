@@ -28,8 +28,8 @@ public class ArcadianDreamClient implements ClientModInitializer {
         ModEntityRenderers.register();
         ModParticles.registerClient();
         ModColorProviders.register();
-        ModMessages.registerS2CPackets();
         ModMessages.registerC2SPackets();
+        ModMessages.registerS2CPackets();
         HudRenderCallback.EVENT.register(new StaminaHUD());
         ModModelPredicateProvider.register();
         ModBlockEntityRenderer.register();
@@ -37,5 +37,6 @@ public class ArcadianDreamClient implements ClientModInitializer {
         ModBlockRenderLayers.register();
         ModEntityModelLayers.register();
         ModTrinketRenderers.register();
+
     }
 }

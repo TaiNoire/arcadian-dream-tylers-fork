@@ -63,6 +63,7 @@ public class ArcadianDream implements ModInitializer {
 		ModWorldGen.register();
 		ModLootTableModifiers.modify();
 
+
 		ModEvents.register();
 		ModScreenHandlers.register();
 
