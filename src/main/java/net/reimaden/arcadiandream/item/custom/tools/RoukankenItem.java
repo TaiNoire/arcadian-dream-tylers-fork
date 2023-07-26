@@ -75,8 +75,9 @@ int dashTimer;
             if (isDashing) {
                 if (!entity.isOnGround()) {
                     entity.fallDistance = 0F;
-                    if (dashTimer > 30) {
-                        generateTrail(world, (PlayerEntity) entity);
+                    if (dashTimer > 7) {
+                        //TODO: Fix Roukanken Particles
+                        //generateTrail(world, (PlayerEntity) entity);
                     } else {
                         dashTimer++;
                     }

@@ -12,7 +12,7 @@ import net.reimaden.arcadiandream.util.IEntityDataSaver;
 public class StaminaSyncS2CPacket {
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
         if (client.player != null) {
-            ((IEntityDataSaver) client.player).getPersistentData().putInt(ArcadianDream.MOD_ID + "_stamina", buf.readInt());
+            ((IEntityDataSaver) client.player).arcadiandream$getPersistentData().putInt(ArcadianDream.MOD_ID + "_stamina", buf.readInt());
         }
 
     }

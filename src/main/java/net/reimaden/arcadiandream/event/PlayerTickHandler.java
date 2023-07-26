@@ -12,7 +12,7 @@ public class PlayerTickHandler implements ServerTickEvents.StartTick {
     public void onStartTick(MinecraftServer server) {
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             IEntityDataSaver dataPlayer = ((IEntityDataSaver) player);
-            dataPlayer.getPersistentData();
+            dataPlayer.arcadiandream$getPersistentData();
             if (StaminaHelper.getStamina((IEntityDataSaver) dataPlayer) < StaminaHelper.getMaxStamina((IEntityDataSaver) dataPlayer)){
                         StaminaHelper.changeStamina((IEntityDataSaver) player, StaminaHelper.getStaminaRegenerationFactor((IEntityDataSaver) player));
                 }

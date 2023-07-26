@@ -16,7 +16,7 @@ public class StaminaHelper {
     private static final int BaseStaminaRegen = ArcadianDream.CONFIG.staminaOptions.staminaRegen();
 
     public static void changeStamina(IEntityDataSaver player, int amount){
-        NbtCompound nbt = player.getPersistentData();
+        NbtCompound nbt = player.arcadiandream$getPersistentData();
         int playerStamina = nbt.getInt(ArcadianDream.MOD_ID + "_stamina");
         int total = playerStamina + amount;
         if (total > getMaxStamina(player)) {total = getMaxStamina(player);}
@@ -25,7 +25,7 @@ public class StaminaHelper {
     }
 
     public static int getStamina(IEntityDataSaver player){
-        NbtCompound nbt = player.getPersistentData();
+        NbtCompound nbt = player.arcadiandream$getPersistentData();
         return nbt.getInt(ArcadianDream.MOD_ID + "_stamina");
     }
 
@@ -34,18 +34,18 @@ public class StaminaHelper {
     }
 
     public static void setMaxStamina(IEntityDataSaver player, int Amount){
-        NbtCompound nbt = player.getPersistentData();
+        NbtCompound nbt = player.arcadiandream$getPersistentData();
         nbt.putInt(ArcadianDream.MOD_ID + "_maxstamina", Amount);
     }
 
     public static void changeStaminaRegenerationFactor (IEntityDataSaver player, int Amount){
-        NbtCompound nbt = player.getPersistentData();
+        NbtCompound nbt = player.arcadiandream$getPersistentData();
         int factor = nbt.getInt(ArcadianDream.MOD_ID + "_regenstamina") + Amount;
         nbt.putInt(ArcadianDream.MOD_ID + "_regenstamina", factor);
     }
 
     public static int getStaminaRegenerationFactor (IEntityDataSaver player){
-        NbtCompound nbt = player.getPersistentData();
+        NbtCompound nbt = player.arcadiandream$getPersistentData();
         return BaseStaminaRegen + nbt.getInt(ArcadianDream.MOD_ID + "_regenstamina");
     }
 

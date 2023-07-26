@@ -112,6 +112,9 @@ public class ModItems {
             new FabricItemSettings().maxDamage(ToolMaterials.IRON.getDurability() - 50)));
     public static final Item ICICLE_SWORD = registerItem("icicle_sword", new IcicleSwordItem(ModToolMaterials.ENCHANTED_ICE, 3, -2.4f,
             new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+    public static final Item ROUKANKEN = registerItem("roukanken", new RoukankenItem(ToolMaterials.NETHERITE, 10, -2.0f,
+            new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+
 
     // Danmaku
     public static final Item CIRCLE_BULLET_CORE = registerItem("circle_bullet_core", new BulletCoreItem(new FabricItemSettings()));
@@ -156,6 +159,7 @@ public class ModItems {
     public static final Item ICE_FAIRY_SPAWN_EGG = registerItem("ice_fairy_spawn_egg",
             new SpawnEggItem(ModEntities.ICE_FAIRY, 0xABF0FF, 0xC6FBFF,
                     new FabricItemSettings()));
+
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(ArcadianDream.MOD_ID, name), item);

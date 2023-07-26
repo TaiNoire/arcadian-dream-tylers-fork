@@ -63,6 +63,7 @@ public class ModItemGroups {
                 entries.add(ModItems.MIRACLE_MALLET);
                 entries.add(ModItems.FOLDING_CHAIR);
                 entries.add(ModItems.ICICLE_SWORD);
+                entries.add(ModItems.ROUKANKEN);
                 entries.add(ModItems.SPREAD_PATTERN_TEMPLATE);
                 entries.add(ModItems.RAY_PATTERN_TEMPLATE);
                 entries.add(ModItems.RING_PATTERN_TEMPLATE);
